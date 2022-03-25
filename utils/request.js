@@ -4,18 +4,17 @@ import cookie from 'js-cookie'
 
 // 创建axios实例
 const service = axios.create({
-  //baseURL: 'http://qy.free.idcfengye.com/api', // api 的 base_url
-  //baseURL: 'http://localhost:8210', // api 的 base_url
-  baseURL: 'http://localhost:9001',
-  timeout: 15000 // 请求超时时间
-
+  baseURL: 'http://localhost:9001', // api的base_url
+  timeout: 20000 // 请求超时时间
 })
 
-// http request 拦截器
+//第三步 创建拦截器  http request 拦截器
 service.interceptors.request.use(
   config => {
     //debugger
+    //判断cookie里面是否有名称是guli_token数据
     if (cookie.get('guli_token')) {
+      //把获取cookie值放到header里面
       config.headers['token'] = cookie.get('guli_token');
     }
     return config
@@ -23,6 +22,7 @@ service.interceptors.request.use(
   err => {
     return Promise.reject(err);
   })
+
 // http response 拦截器
 service.interceptors.response.use(
   response => {
@@ -53,4 +53,3 @@ service.interceptors.response.use(
   });
 
 export default service
-
